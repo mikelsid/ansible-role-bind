@@ -81,6 +81,12 @@ The packages `python-netaddr` (required for the [`ipaddr`](https://docs.ansible.
 | `- text`                    | `[]`                 | A list of mappings with keys `name:` and `text:`, specifying TXT records. `text:` can be a list or string.                           |
 | `- caa`                     | `[]`                 | A list of mappings with keys `name:` and `text:`, specifying CAA records. `text:` can be a list or string.                           |
 | `- type`                    | -                    | Optional zone type. If not specified, autodetection will be used. Possible values include `primary`, `secondary` or `forward`        |
+| `- time`       | `{}`                 | Zone timings configuration                                                                           |
+| `- time.ttl`       | `bind_zone_ttl`                 | Zone TTL                                                               |
+| `- time.refresh`       | `bind_zone_time_to_refresh`                 | Time to expire field in the SOA record.                                                              |
+| `- time.retry`       | `bind_zone_time_to_retry`                 | Time to retry field in the SOA record.                                                                 |
+| `- time.expire`       | `bind_zone_time_to_expire`                 | Time to retry field in the SOA record.                                                               |
+| `- time.minimum`       | `bind_zone_minimum_ttl`                 | Minimum TTL field in the SOA record.                                                               |
 | `bind_zone_file_mode`       | 0640                 | The file permissions for the main config file (named.conf)                                                                           |
 | `bind_zone_minimum_ttl`     | `1D`                 | Minimum TTL field in the SOA record.                                                                                                 |
 | `bind_zone_time_to_expire`  | `1W`                 | Time to expire field in the SOA record.                                                                                              |
@@ -114,6 +120,12 @@ In order to set up an authoritative name server that is available to clients, yo
 bind_zones:
   # Example of a primary zone (hosts: and name_servers: ares defined)
   - name: mydomain.com           # Domain name
+    time: # Zone timings configuration
+      ttl: 60
+      refresh: 60
+      retry: 60
+      expire: 60
+      minimum: 60
     create_reverse_zones: false  # Skip creation of reverse zones
     primaries:
       - 192.0.2.1                # Primary server(s) for this zone

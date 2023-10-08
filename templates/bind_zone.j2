@@ -4,7 +4,7 @@
  #  way the serial will only be updated if there are some content changes.
  #}
 {% set _zone_data = {} %}
-{% set _ = _zone_data.update({'ttl': bind_zone_ttl}) %}
+{% set _ = _zone_data.update({'ttl': item.time.ttl|default(bind_zone_ttl)}) %}
 {% set _ = _zone_data.update({'domain': item.name}) %}
 {% set _ = _zone_data.update({'mname': item.name_servers|default([])}) %}
 {% set _ = _zone_data.update({'aname': item.other_name_servers|default([])}) %}
@@ -14,10 +14,10 @@
 {% else %}
 {% set _ = _zone_data.update({'rname': 'hostmaster.' + _zone_data['domain']}) %}
 {% endif %}
-{% set _ = _zone_data.update({'refresh': bind_zone_time_to_refresh}) %}
-{% set _ = _zone_data.update({'retry': bind_zone_time_to_retry}) %}
-{% set _ = _zone_data.update({'expire': bind_zone_time_to_expire}) %}
-{% set _ = _zone_data.update({'minimum': bind_zone_minimum_ttl}) %}
+{% set _ = _zone_data.update({'refresh': item.time.refresh|default(bind_zone_time_to_refresh)}) %}
+{% set _ = _zone_data.update({'retry': item.time.retry|default(bind_zone_time_to_retry)}) %}
+{% set _ = _zone_data.update({'expire': item.time.expire|defautl(bind_zone_time_to_expire)}) %}
+{% set _ = _zone_data.update({'minimum': item.time.minimum|default(bind_zone_minimum_ttl)}) %}
 {% set _ = _zone_data.update({'hosts': item.hosts|default([])}) %}
 {% set _ = _zone_data.update({'delegate': item.delegate|default([])}) %}
 {% set _ = _zone_data.update({'services': item.services|default([])}) %}
